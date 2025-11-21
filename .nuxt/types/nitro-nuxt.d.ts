@@ -1,7 +1,7 @@
 
 /// <reference path="app.config.d.ts" />
 /// <reference path="runtime-config.d.ts" />
-/// <reference types="/home/mdmuhir/Desktop/Jay-Website/node_modules/@nuxt/nitro-server/dist/index.mjs" />
+/// <reference types="/home/mdmuhir/Desktop/content_creator-s_portfolio/node_modules/@nuxt/nitro-server/dist/index.mjs" />
 /// <reference path="nitro-middleware.d.ts" />
 
 import type { RuntimeConfig } from 'nuxt/schema'
