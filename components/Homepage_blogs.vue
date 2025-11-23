@@ -1,72 +1,131 @@
-<script setup></script>
+<script setup lang="ts">
+// Blog interface based on PocketBase collection
+interface Blog {
+  id: string;
+  collectionId: string;
+  collectionName: string;
+  created: string;
+  updated: string;
+  title: string;
+  content: string;
+  cover_image: string;
+  slug: string;
+}
+
+const blogs = ref<Blog[]>([])
+const loading = ref(false)
+
+const { $pb } = useNuxtApp()
+
+// Fetch latest blogs from PocketBase
+const fetchBlogs = async () => {
+  try {
+    loading.value = true
+    const result = await $pb.collection('blogs').getList(1, 4, {
+      sort: '-created'
+    })
+    blogs.value = result.items as unknown as Blog[]
+  } catch (error) {
+    console.error('Error fetching blogs:', error)
+  } finally {
+    loading.value = false
+  }
+}
+
+const getCoverImageUrl = (blog: Blog) => {
+  if (blog.cover_image) {
+    return $pb.getFileUrl(blog, blog.cover_image)
+  }
+  return ''
+}
+
+// Format date for display
+const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  })
+}
+
+// Load blogs on mount
+onMounted(() => {
+  fetchBlogs()
+})
+</script>
 
 <template>
   <section class="py-16 bg-[#F9F6F3]">
-    <div class="max-w-6xl mx-auto px-4">
+    <div class=" mx-auto px-4">
       <h2 class="text-3xl md:text-4xl font-bold mb-2">
-        How Can <span class="text-blue-600">I Help You?</span>
+        Latest <span class="text-blue-600">Blog Posts</span>
       </h2>
       <p class="text-gray-600 mb-10 max-w-xl">
-        I provide useful resources and services to help you grow online.
+        Thoughts, insights, and tutorials on web development, software engineering, and technology.
       </p>
 
-      <div class="grid md:grid-cols-3 gap-6">
-        <!-- Card 1 -->
-        <div class="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition">
-          <div
-            class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4"
-          >
-            <span class="text-2xl">📹</span>
-          </div>
-          <h3 class="text-xl font-semibold mb-2">Grow a YouTube Channel</h3>
-          <p class="text-gray-600 mb-4 text-sm">
-            Learn my process for growing a YouTube channel based on consistency
-            and smart content.
-          </p>
-          <NuxtLink to="/services/youtube" class="text-blue-600 font-medium">
-            Learn more →
-          </NuxtLink>
-        </div>
+      <div v-if="loading" class="text-center py-12">
+        <p class="text-gray-600">Loading latest blogs...</p>
+      </div>
 
-        <!-- Card 2 -->
-        <div class="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition">
-          <div
-            class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4"
-          >
-            <span class="text-2xl">⚡</span>
-          </div>
-          <h3 class="text-xl font-semibold mb-2">Be More Productive</h3>
-          <p class="text-gray-600 mb-4 text-sm">
-            Learn how to improve your habits, build routines, and work smarter
-            every day.
-          </p>
-          <NuxtLink
-            to="/services/productivity"
-            class="text-green-600 font-medium"
-          >
-            Get started →
-          </NuxtLink>
-        </div>
+      <div v-else-if="blogs.length === 0" class="text-center py-12">
+        <p class="text-gray-600">No blog posts available yet.</p>
+      </div>
 
-        <!-- Card 3 -->
-        <div class="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition">
-          <div
-            class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-4"
-          >
-            <span class="text-2xl">💼</span>
+      <!-- Masonry Grid -->
+      <div v-else class="columns-1 md:columns-2 lg:columns-3 gap-6">
+        <article
+          v-for="blog in blogs"
+          :key="blog.id"
+          class="break-inside-avoid bg-white rounded-2xl shadow hover:shadow-lg transition overflow-hidden mb-6"
+        >
+          <img
+            v-if="blog.cover_image"
+            :src="getCoverImageUrl(blog)"
+            :alt="blog.title"
+            class="w-full object-cover"
+          />
+
+          <div class="p-6">
+            <div class="flex items-center text-sm text-gray-500 mb-3">
+              <span class="bg-blue-100 text-blue-600 px-2 py-1 rounded mr-3">Blog</span>
+              <span>{{ formatDate(blog.created) }}</span>
+            </div>
+
+            <h3 class="text-xl font-semibold mb-3">
+              <NuxtLink
+                :to="`/blog/${blog.slug}`"
+                class="hover:text-blue-600 transition-colors"
+              >
+                {{ blog.title }}
+              </NuxtLink>
+            </h3>
+
+            <p
+              class="text-gray-600 mb-4 text-sm"
+              v-html="blog.content ? blog.content.substring(0, 150) + '...' : 'No content available.'"
+            ></p>
+
+            <NuxtLink
+              :to="`/blog/${blog.slug}`"
+              class="text-blue-600 font-medium hover:text-blue-700 transition-colors"
+            >
+              Read More →
+            </NuxtLink>
           </div>
-          <h3 class="text-xl font-semibold mb-2">Build an Online Business</h3>
-          <p class="text-gray-600 mb-4 text-sm">
-            Learn to turn your knowledge into an online business through systems
-            and content.
-          </p>
-          <NuxtLink to="/services/business" class="text-purple-600 font-medium">
-            Discover →
-          </NuxtLink>
-        </div>
+        </article>
+      </div>
+
+      <!-- View All -->
+      <div v-if="blogs.length > 0" class="text-center mt-8">
+        <NuxtLink
+          to="/blog"
+          class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-colors"
+        >
+          View All Posts →
+        </NuxtLink>
       </div>
     </div>
   </section>
 </template>
 
-<style scoped></style>

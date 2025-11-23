@@ -23,7 +23,7 @@ onMounted(fetchProfile);
   <div class="font-sans antialiased text-gray-900 leading-relaxed">
     <!-- HERO SECTION -->
     <section
-      class="relative overflow-hidden min-h-screen container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 py-16 sm:py-20 md:py-28 bg-[#F9F6F3] rounded-3xl mt-6"
+      class="relative overflow-hidden container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 py-16 sm:py-20 md:py-28 bg-[#F9F6F3] rounded-3xl mt-6"
     >
       <!-- Background -->
       <div
@@ -136,7 +136,7 @@ onMounted(fetchProfile);
     </section>
 
     <!-- BLOGS SECTION -->
-    <section class="blog mt-20">
+    <section class="blog mt-20 overflow-hidden container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 py-16 sm:py-20 md:py-28 bg-[#F9F6F3] rounded-3xl">
       <Homepage_blogs />
     </section>
   </div>
