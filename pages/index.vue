@@ -43,20 +43,13 @@ onMounted(fetchProfile);
         </div>
         <div class="right-part w-2/3">
           <h1 class="text-4xl font-bold tracking-tight text-white sm:text-6xl">
-            Hi, I'm <span class="text-blue-400">Jay Ruhmuhir</span>
+            Hi, I'm <span class="text-blue-400">Asadudzaman Joy</span>
           </h1>
           <p class="mt-6 text-lg leading-8 text-gray-300 sm:text-xl">
-            A passionate full-stack developer crafting beautiful, functional web
-            applications that solve real-world problems. I specialize in modern
-            technologies and scalable architectures.
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione similique sequi sed sunt dolores voluptate recusandae provident magni nihil, odio consequatur voluptatibus perferendis voluptatem nostrum vitae maiores placeat assumenda cumque, nam reiciendis qui culpa voluptas fugit sit. Ipsum velit porro commodi, veritatis cupiditate assumenda doloribus maiores, doloremque quo mollitia rem? Consequatur, fugiat? Doloribus, fuga? Vitae soluta asperiores dolorum doloribus, sequi fugit dolores facere cum itaque mollitia voluptates impedit temporibus quia, quod nobis commodi voluptas eum officia, assumenda autem? Iusto vitae impedit et ipsa sapiente. Voluptates dolorum rerum, alias autem architecto cum modi possimus! Ullam, voluptatem! Porro laboriosam maiores corporis velit!
           </p>
           <div class="mt-10 flex items-center justify-center gap-x-6">
-            <NuxtLink
-              to="/portfolio"
-              class="rounded-md bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors"
-            >
-              View My Work
-            </NuxtLink>
+           
             <NuxtLink
               to="/contact"
               class="text-base font-semibold leading-6 text-gray-300 hover:text-blue-400 transition-colors"

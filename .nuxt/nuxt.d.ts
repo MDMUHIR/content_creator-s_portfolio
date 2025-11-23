@@ -1,5 +1,5 @@
-/// <reference types="@nuxtjs/tailwindcss" />
 /// <reference types="@nuxt/telemetry" />
+/// <reference types="@nuxtjs/tailwindcss" />
 /// <reference types="@nuxt/devtools" />
 /// <reference path="types/builder-env.d.ts" />
 /// <reference path="types/plugins.d.ts" />
@@ -7,7 +7,7 @@
 /// <reference path="types/app.config.d.ts" />
 /// <reference path="types/runtime-config.d.ts" />
 /// <reference types="nuxt/app" />
-/// <reference types="/home/mdmuhir/Desktop/content_creator-s_portfolio/node_modules/@nuxt/nitro-server/dist/index.mjs" />
+/// <reference types="C:/Users/MD MUHIR/Desktop/content_creator-s_portfolio/node_modules/@nuxt/nitro-server/dist/index.mjs" />
 /// <reference types="vue-router" />
 /// <reference path="types/middleware.d.ts" />
 /// <reference path="types/nitro-middleware.d.ts" />
