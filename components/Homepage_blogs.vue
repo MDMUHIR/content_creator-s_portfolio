@@ -55,7 +55,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="py-16 bg-[#F9F6F3]">
+  <section class=" bg-[#F9F6F3]">
     <div class=" mx-auto px-4">
       <h2 class="text-3xl md:text-4xl font-bold mb-2">
         Latest <span class="text-blue-600">Blog Posts</span>

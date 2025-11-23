@@ -1,15 +1,16 @@
 <template>
-  <div>
+  <div class=" sm:container mx-auto">
     <h1 class="text-4xl font-bold mb-8">Blog</h1>
-    <p class="mb-8 text-lg text-gray-300">Thoughts, insights, and tutorials on web development, software engineering, and technology.</p>
+    <p class="mb-8 text-lg text-gray-800">Thoughts, insights, and tutorials on web development, software engineering, and technology.</p>
 
-    <div v-if="blogs.length === 0" class="text-center text-gray-400 py-12">
+    <div v-if="blogs.length === 0" class="text-center text-gray-800 py-12">
       <p class="text-lg">No blog posts yet. Check back soon!</p>
     </div>
 
-    <div v-else class="space-y-8">
-      <article v-for="blog in blogs" :key="blog.id" class="bg-gray-800 rounded-lg overflow-hidden shadow-lg">
-        <img v-if="blog.cover_image" :src="getCoverImageUrl(blog)" :alt="blog.title" class="w-full h-64 object-cover">
+    <!-- Masonry Grid -->
+    <div v-else class="columns-1 md:columns-2 lg:columns-3 gap-6">
+      <article v-for="blog in blogs" :key="blog.id" class="break-inside-avoid bg-[#F9F6F3] rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition mb-6">
+        <img v-if="blog.cover_image" :src="getCoverImageUrl(blog)" :alt="blog.title" class="w-full object-cover">
         <div class="p-6">
           <div class="flex items-center text-sm text-gray-400 mb-4">
             <span class="bg-blue-600 px-2 py-1 rounded mr-3">Blog</span>
@@ -20,7 +21,7 @@
               {{ blog.title }}
             </NuxtLink>
           </h2>
-          <p class="text-gray-300 mb-4" v-html="blog.content ? blog.content.substring(0, 200) + '...' : 'No content available.'"></p>
+          <p class="text-black mb-4" v-html="blog.content ? blog.content.substring(0, 200) + '...' : 'No content available.'"></p>
           <div class="flex justify-end items-center">
             <NuxtLink :to="`/blog/${blog.slug}`" class="text-blue-400 hover:text-blue-300">
               Read More →
