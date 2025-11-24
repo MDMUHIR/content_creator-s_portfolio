@@ -58,7 +58,7 @@ onMounted(fetchProfile);
             <span
               class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600"
             >
-              Asaduzaman Joy
+              Asadudzaman Joy
             </span>
           </h1>
 
@@ -141,7 +141,7 @@ onMounted(fetchProfile);
 
     <!-- YOUTUBE SECTION -->
     <section
-      class="youtube mt-20 overflow-hidden container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 py-16 sm:py-20 md:py-28"
+      class="youtube mt-20 overflow-hidden container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 py-16 sm:py-20 md:py-28 bg-[#F9F6F3] rounded-3xl"
     >
       <Homepage_youtube />
     </section>

@@ -44,7 +44,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="bg-[#F9F6F3]">
+  <section>
     <div class="mx-auto px-4">
       <h2 class="text-3xl md:text-4xl font-bold mb-2">
         Latest <span class="text-red-600">YouTube Videos</span>
@@ -61,12 +61,12 @@ onMounted(() => {
         <p class="text-gray-600">No videos available yet.</p>
       </div>
 
-      <!-- Grid Layout -->
-      <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Masonry Grid -->
+      <div v-else class="columns-1 md:columns-2 lg:columns-3 gap-6">
         <article
           v-for="video in videos"
           :key="video.id"
-          class="bg-white rounded-2xl shadow hover:shadow-lg transition overflow-hidden"
+          class="break-inside-avoid bg-white rounded-2xl shadow hover:shadow-lg transition overflow-hidden mb-6"
         >
           <!-- Video -->
           <div class="relative w-full">
@@ -113,7 +113,7 @@ onMounted(() => {
       </div>
 
       <!-- View All -->
-      <div v-if="videos.length > 0" class="text-center mt-12">
+      <div v-if="videos.length > 0" class="text-center mt-8">
         <NuxtLink
           to="/youtube"
           class="inline-block bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg transition-colors"

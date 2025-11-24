@@ -6,7 +6,7 @@
       <div class="flex justify-between items-center py-4">
         <div class="flex-shrink-0">
           <NuxtLink to="/" class="text-2xl font-bold text-gray-900"
-            >Asaduzaman Joy</NuxtLink
+            >Asadudzaman Joy</NuxtLink
           >
         </div>
         <div class="hidden md:block">
