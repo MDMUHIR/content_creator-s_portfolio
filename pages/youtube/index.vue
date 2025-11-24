@@ -7,8 +7,9 @@
       <p class="text-lg">No videos available yet. Check back soon!</p>
     </div>
 
-    <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <div v-for="video in videos" :key="video.id" class="bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+    <!-- Masonry Grid -->
+    <div v-else class="columns-1 md:columns-2 lg:columns-3 gap-6">
+      <div v-for="video in videos" :key="video.id" class="break-inside-avoid bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition mb-6">
         <div class="aspect-w-16 aspect-h-9">
           <iframe
             :src="`https://www.youtube.com/embed/${video.video_id}`"

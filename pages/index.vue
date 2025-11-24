@@ -87,7 +87,7 @@ onMounted(fetchProfile);
 
       <!-- Newsletter Section -->
       <div
-        class="relative z-10 bg-white rounded-3xl shadow-2xl p-6 sm:p-8 md:p-12 mt-16 sm:mt-20 md:mt-28 flex flex-col sm:flex-row items-center gap-10 sm:gap-12"
+        class="relative z-10 bg-white rounded-3xl  p-6 sm:p-8 md:p-12 mt-16 sm:mt-20 md:mt-28 flex flex-col sm:flex-row items-center gap-10 sm:gap-12"
       >
         <div class="w-full sm:w-1/2">
           <h1
