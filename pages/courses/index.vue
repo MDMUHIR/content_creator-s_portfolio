@@ -20,9 +20,9 @@ const courses = ref<Course[]>([]);
 const searchTerm = ref("");
 const sortBy = ref("created");
 const loading = ref(true);
+
 const { $pb } = useNuxtApp();
 
-// Fetch courses
 const fetchCourses = async () => {
   try {
     loading.value = true;
@@ -30,7 +30,7 @@ const fetchCourses = async () => {
       filter: "published = true",
       sort: "-created",
     });
-    courses.value = result as Course[];
+    courses.value = result as unknown as Course[];
   } catch (err) {
     console.error("Error loading courses:", err);
   } finally {
@@ -38,37 +38,35 @@ const fetchCourses = async () => {
   }
 };
 
-// Image URL helper
-const getCourseImageUrl = (course: Course) => {
-  return course.cover_image
+const getCourseImageUrl = (course: Course) =>
+  course.cover_image
     ? $pb.getFileUrl(course, course.cover_image)
     : "/placeholder-course.jpg";
-};
 
-// Short excerpt
-const shortExcerpt = (html: string | undefined) => {
+const shortExcerpt = (html?: string) => {
   if (!html) return "";
-  const text = html.replace(/<[^>]*>/g, "");
+  const text = html.replace(/<[^>]*>/g, "").trim();
   return text.length > 100 ? text.slice(0, 100) + "..." : text;
 };
 
-// Date formatter
-const formatDate = (d: string) => {
-  return new Date(d).toLocaleDateString("en-US", {
+const formatDate = (d: string) =>
+  new Date(d).toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
     year: "numeric",
   });
-};
 
-// Days until start
-const daysUntilStart = (course: Course) => {
+const daysUntilStart = (course: Course): number | null => {
   if (!course.starting_date) return null;
   const diff = new Date(course.starting_date).getTime() - Date.now();
   return Math.ceil(diff / (1000 * 60 * 60 * 24));
 };
 
-// Discount helpers
+const shouldShowStartsSoon = (course: Course) => {
+  const days = daysUntilStart(course);
+  return days !== null && days > 0 && days <= 7;
+};
+
 const courseDiscountPercent = (course: Course) => {
   const discount = Number(course.discount || 0);
   if (!discount) return null;
@@ -80,13 +78,11 @@ const finalPrice = (course: Course) => {
   return Math.max(0, Number(course.price) - discount);
 };
 
-// Filtered & Sorted Courses
 const filteredCourses = computed(() => {
   let list = courses.value.filter((c) => {
     const search = searchTerm.value.toLowerCase();
     const desc = c.description ? c.description.replace(/<[^>]*>/g, "") : "";
-    const text = (c.title + " " + desc).toLowerCase();
-    return text.includes(search);
+    return (c.title + " " + desc).toLowerCase().includes(search);
   });
 
   switch (sortBy.value) {
@@ -118,196 +114,155 @@ const filteredCourses = computed(() => {
         (a, b) => new Date(b.created).getTime() - new Date(a.created).getTime()
       );
   }
-
   return list;
 });
 
 onMounted(() => fetchCourses());
 </script>
+
 <template>
-  <div class="max-w-7xl mx-auto px-4 py-12">
-    <!-- Header -->
-    <div class="text-center mb-12">
-      <h1 class="text-5xl font-extrabold text-gray-900 mb-4">All Courses</h1>
-      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-        Master new skills with our expert-led courses. New batches starting
-        soon!
-      </p>
-    </div>
+  <div class="min-h-screen py-10">
+    <div class="container mx-auto px-4">
+      <section class="header">
+        <!-- Header -->
+        <div class="mb-10">
+          <h1 class="text-4xl font-bold text-gray-900">All Courses</h1>
+          <p class="text-gray-600 mt-2 text-lg">
+            Browse our latest expert-led courses.
+          </p>
+        </div>
 
-    <!-- Filters Bar -->
-    <div
-      class="mb-10 flex flex-col lg:flex-row gap-4 items-center justify-between"
-    >
-      <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
-        <!-- Search -->
-        <div class="relative">
-          <input
-            v-model="searchTerm"
-            type="text"
-            placeholder="Search by title or topic..."
-            class="pl-12 pr-6 py-4 w-full lg:w-96 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-amber-500 transition"
-          />
-          <svg
-            class="absolute left-4 top-5 w-5 h-5 text-gray-500"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+        <!-- Filters -->
+        <div class="bg-white rounded-2xl border p-6 mb-10">
+          <div
+            class="flex flex-col lg:flex-row justify-between gap-6 items-start lg:items-center"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            />
-          </svg>
-        </div>
+            <!-- Search + Sort -->
+            <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
+              <!-- Search -->
+              <input
+                v-model="searchTerm"
+                type="text"
+                placeholder="Search courses..."
+                class="w-full sm:w-80 px-4 py-3 border rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none"
+              />
 
-        <!-- Sort -->
-        <select
-          v-model="sortBy"
-          class="px-6 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-amber-500"
-        >
-          <option value="created">Newest First</option>
-          <option value="starting_date">Soonest Start</option>
-          <option value="price">Price: Low to High</option>
-          <option value="price_desc">Price: High to Low</option>
-          <option value="discount">Biggest Discount</option>
-        </select>
-      </div>
-
-      <!-- Course count -->
-      <div class="text-gray-600 font-medium">
-        {{ filteredCourses.length }} course{{
-          filteredCourses.length !== 1 ? "s" : ""
-        }}
-        available
-      </div>
-    </div>
-
-    <!-- Loading Skeleton -->
-    <div
-      v-if="loading"
-      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
-    >
-      <div
-        v-for="n in 6"
-        :key="n"
-        class="bg-white rounded-2xl shadow-lg overflow-hidden animate-pulse"
-      >
-        <div class="h-48 bg-gray-200"></div>
-        <div class="p-6">
-          <div class="h-6 bg-gray-200 rounded mb-3"></div>
-          <div class="h-4 bg-gray-200 rounded w-5/6 mb-4"></div>
-          <div class="h-10 bg-gray-200 rounded-lg"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Empty State -->
-    <div v-else-if="filteredCourses.length === 0" class="text-center py-24">
-      <div
-        class="bg-gray-100 rounded-full w-32 h-32 mx-auto mb-6 flex items-center justify-center"
-      >
-        <svg
-          class="w-16 h-16 text-gray-400"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-          />
-        </svg>
-      </div>
-      <h3 class="text-2xl font-bold text-gray-800 mb-2">No courses found</h3>
-      <p class="text-gray-600">Try adjusting your search or filters.</p>
-    </div>
-
-    <!-- Course Grid -->
-    <div
-      v-else
-      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
-    >
-      <div
-        v-for="course in filteredCourses"
-        :key="course.id"
-        class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100"
-      >
-        <NuxtLink :to="`/courses/${course.id}`" class="block">
-          <!-- Cover Image -->
-          <div class="relative overflow-hidden">
-            <img
-              :src="getCourseImageUrl(course)"
-              :alt="course.title"
-              class="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500"
-            />
-            <!-- Discount Badge -->
-            <div
-              v-if="courseDiscountPercent(course)"
-              class="absolute top-3 left-3 bg-red-500 text-white px-3 py-1.5 rounded-full text-sm font-bold shadow-lg animate-pulse"
-            >
-              -{{ courseDiscountPercent(course) }}% OFF
+              <!-- Sort -->
+              <select
+                v-model="sortBy"
+                class="w-full sm:w-56 px-4 py-3 border rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none"
+              >
+                <option value="created">Newest First</option>
+                <option value="starting_date">Soonest Start</option>
+                <option value="price">Price: Low to High</option>
+                <option value="price_desc">Price: High to Low</option>
+                <option value="discount">Biggest Discount</option>
+              </select>
             </div>
-            <!-- Starts Soon Badge -->
-            <div
-              v-if="
-                daysUntilStart(course) !== null &&
-                daysUntilStart(course) > 0 &&
-                daysUntilStart(course) <= 7
-              "
-              class="absolute top-3 right-3 bg-gradient-to-r from-amber-500 to-orange-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg"
-            >
-              Starts in {{ daysUntilStart(course) }} day{{
-                daysUntilStart(course) > 1 ? "s" : ""
-              }}
+
+            <!-- Stats -->
+            <div class="text-gray-700">
+              <span class="text-3xl font-bold text-amber-600">
+                {{ filteredCourses.length }}
+              </span>
+              <span class="font-medium">
+                course{{ filteredCourses.length !== 1 ? "s" : "" }}
+              </span>
+              <p class="text-xs text-gray-400">Updated just now</p>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div class="p-6">
+      <main class="bg-[#F9F6F3] rounded-3xl p-4">
+        <!-- Loading -->
+        <div
+          v-if="loading"
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+        >
+          <div
+            v-for="n in 8"
+            :key="n"
+            class="bg-white border rounded-xl h-80 animate-pulse"
+          ></div>
+        </div>
+
+        <!-- Empty -->
+        <div
+          v-else-if="filteredCourses.length === 0"
+          class="text-center py-20 text-gray-600"
+        >
+          <h3 class="text-2xl font-semibold mb-3">
+            {{ courses.length === 0 ? "No courses yet" : "No courses found" }}
+          </h3>
+          <button
+            v-if="searchTerm"
+            @click="searchTerm = ''"
+            class="mt-4 px-5 py-3 bg-amber-500 text-white rounded-xl"
+          >
+            Clear Search
+          </button>
+        </div>
+
+        <!-- Courses -->
+        <div
+          v-else
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+        >
+          <NuxtLink
+            v-for="course in filteredCourses"
+            :key="course.id"
+            :to="`/courses/${course.id}`"
+            class="block bg-white rounded-xl border hover:border-amber-500 transition p-4"
+          >
+            <!-- Image -->
+            <div class="relative mb-4">
+              <img
+                :src="getCourseImageUrl(course)"
+                class="w-full h-48 object-cover rounded-lg"
+              />
+
+              <!-- Discount -->
+              <span
+                v-if="courseDiscountPercent(course)"
+                class="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded"
+              >
+                -{{ courseDiscountPercent(course) }}%
+              </span>
+
+              <!-- Starts Soon -->
+              <span
+                v-if="shouldShowStartsSoon(course)"
+                class="absolute top-2 right-2 bg-amber-600 text-white text-xs px-2 py-1 rounded"
+              >
+                Starts in {{ daysUntilStart(course) }}d
+              </span>
+            </div>
+
             <!-- Title -->
-            <h3
-              class="text-xl font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-amber-600 transition-colors"
-            >
+            <h3 class="font-bold text-gray-900 text-lg mb-2 line-clamp-2">
               {{ course.title }}
             </h3>
 
-            <!-- Short excerpt -->
-            <p
-              class="text-gray-600 text-sm mb-4 line-clamp-2"
-              v-html="shortExcerpt(course.description)"
-            ></p>
+            <!-- Description -->
+            <p class="text-gray-600 text-sm line-clamp-2 mb-4">
+              {{ shortExcerpt(course.description) }}
+            </p>
 
             <!-- Start Date -->
-            <div
+            <p
               v-if="course.starting_date"
-              class="text-xs text-gray-500 mb-4 flex items-center gap-2"
+              class="text-xs text-gray-500 mb-3 flex items-center gap-1"
             >
-              <svg
-                class="w-4 h-4 text-amber-600"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h.01a1 1 0 100-2H6zm3 0a1 1 0 000 2h.01a1 1 0 100-2H9zm3 0a1 1 0 000 2h.01a1 1 0 100-2h-.01zm-3 4a1 1 0 000 2h.01a1 1 0 100-2H9zm3 0a1 1 0 000 2h.01a1 1 0 100-2h-.01zm-3 4a1 1 0 000 2h.01a1 1 0 100-2H9z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-              Starts {{ formatDate(course.starting_date) }}
-            </div>
+              📅 Starts {{ formatDate(course.starting_date) }}
+            </p>
 
             <!-- Price -->
-            <div class="flex items-center justify-between mt-5">
+            <div class="flex justify-between items-end">
               <div>
-                <!-- Discounted Price -->
                 <div class="text-2xl font-bold text-amber-600">
                   ৳ {{ finalPrice(course).toLocaleString() }}
                 </div>
-                <!-- Old Price (strikethrough) -->
                 <div
                   v-if="courseDiscountPercent(course)"
                   class="text-sm text-gray-500 line-through"
@@ -316,18 +271,15 @@ onMounted(() => fetchCourses());
                 </div>
               </div>
 
-              <!-- CTA Button -->
-              <div class="text-right">
-                <span
-                  class="inline-block bg-amber-500 hover:bg-amber-600 text-white font-bold px-5 py-3 rounded-xl shadow-lg transform hover:scale-105 transition"
-                >
-                  View Details →
-                </span>
-              </div>
+              <span
+                class="bg-amber-500 text-white px-4 py-2 rounded-lg text-sm font-medium"
+              >
+                View Details
+              </span>
             </div>
-          </div>
-        </NuxtLink>
-      </div>
+          </NuxtLink>
+        </div>
+      </main>
     </div>
   </div>
 </template>

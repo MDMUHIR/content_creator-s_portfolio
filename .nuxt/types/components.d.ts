@@ -17,6 +17,7 @@ interface _GlobalComponents {
   'Footer': typeof import("../../components/global/Footer.vue")['default']
   'Header': typeof import("../../components/global/Header.vue")['default']
   'HomepageBlogs': typeof import("../../components/Homepage_blogs.vue")['default']
+  'HomepageYoutube': typeof import("../../components/Homepage_youtube.vue")['default']
   'NuxtWelcome': typeof import("../../node_modules/nuxt/dist/app/components/welcome.vue")['default']
   'NuxtLayout': typeof import("../../node_modules/nuxt/dist/app/components/nuxt-layout")['default']
   'NuxtErrorBoundary': typeof import("../../node_modules/nuxt/dist/app/components/nuxt-error-boundary.vue")['default']
@@ -43,6 +44,7 @@ interface _GlobalComponents {
   'LazyFooter': LazyComponent<typeof import("../../components/global/Footer.vue")['default']>
   'LazyHeader': LazyComponent<typeof import("../../components/global/Header.vue")['default']>
   'LazyHomepageBlogs': LazyComponent<typeof import("../../components/Homepage_blogs.vue")['default']>
+  'LazyHomepageYoutube': LazyComponent<typeof import("../../components/Homepage_youtube.vue")['default']>
   'LazyNuxtWelcome': LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/welcome.vue")['default']>
   'LazyNuxtLayout': LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/nuxt-layout")['default']>
   'LazyNuxtErrorBoundary': LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/nuxt-error-boundary.vue")['default']>

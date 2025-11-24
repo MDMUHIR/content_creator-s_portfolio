@@ -53,7 +53,8 @@ onMounted(fetchProfile);
           <h1
             class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight mb-4"
           >
-            Hey friends, I'm
+            <span class="block">Hello...</span>
+            I'm
             <span
               class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600"
             >
@@ -64,14 +65,16 @@ onMounted(fetchProfile);
           <p
             class="text-lg sm:text-xl md:text-2xl text-gray-700 mb-3 font-medium"
           >
-            Content Creator • Entrepreneur
+            Content Creator • Book Reviewer
           </p>
 
           <p
             class="text-base sm:text-lg lg:text-xl text-gray-600 mb-8 max-w-xl mx-auto lg:mx-0"
           >
-            I help people learn to code, build products, grow online businesses,
-            and live more productive & fulfilling lives — all while having fun.
+            I mostly talk about books, but also discusses various topics
+            including business and productivity. And sometimes I travel to
+            different districts of the country and share that experience with
+            you. Join me on this journey of knowledge and travel!
           </p>
 
           <div class="flex justify-center lg:justify-start">
@@ -86,12 +89,13 @@ onMounted(fetchProfile);
       </div>
 
       <!-- Newsletter Section -->
-      <div
-        class="relative z-10 bg-white rounded-3xl  p-6 sm:p-8 md:p-12 mt-16 sm:mt-20 md:mt-28 flex flex-col sm:flex-row items-center gap-10 sm:gap-12"
+
+      <!-- <div
+        class="relative z-10 bg-white rounded-3xl p-6 sm:p-8 md:p-12 mt-16 sm:mt-20 md:mt-28 flex flex-col sm:flex-row items-center gap-10 sm:gap-12"
       >
         <div class="w-full sm:w-1/2">
           <h1
-            class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-3"
+            class="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold leading-tight mb-3"
           >
             <span class="font-normal block">Join to</span> Lifenotes
           </h1>
@@ -109,7 +113,7 @@ onMounted(fetchProfile);
             you love.
           </p>
 
-          <!-- Newsletter Form -->
+          
           <form
             class="flex w-full bg-[#F9F6F3] rounded-full overflow-hidden shadow-inner px-1 sm:px-2 py-1 sm:py-2 sm:gap-2"
           >
@@ -132,11 +136,20 @@ onMounted(fetchProfile);
             No spam • Unsubscribe anytime • 100% free
           </p>
         </div>
-      </div>
+      </div> -->
+    </section>
+
+    <!-- YOUTUBE SECTION -->
+    <section
+      class="youtube mt-20 overflow-hidden container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 py-16 sm:py-20 md:py-28"
+    >
+      <Homepage_youtube />
     </section>
 
     <!-- BLOGS SECTION -->
-    <section class="blog mt-20 overflow-hidden container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 py-16 sm:py-20 md:py-28 bg-[#F9F6F3] rounded-3xl">
+    <section
+      class="blog mt-20 overflow-hidden container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 py-16 sm:py-20 md:py-28 bg-[#F9F6F3] rounded-3xl"
+    >
       <Homepage_blogs />
     </section>
   </div>

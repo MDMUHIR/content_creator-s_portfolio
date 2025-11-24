@@ -17,6 +17,7 @@ type LazyComponent<T> = DefineComponent<HydrationStrategies, {}, {}, {}, {}, {},
 export const Footer: typeof import("../components/global/Footer.vue")['default']
 export const Header: typeof import("../components/global/Header.vue")['default']
 export const HomepageBlogs: typeof import("../components/Homepage_blogs.vue")['default']
+export const HomepageYoutube: typeof import("../components/Homepage_youtube.vue")['default']
 export const NuxtWelcome: typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']
 export const NuxtLayout: typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout")['default']
 export const NuxtErrorBoundary: typeof import("../node_modules/nuxt/dist/app/components/nuxt-error-boundary.vue")['default']
@@ -43,6 +44,7 @@ export const NuxtIsland: typeof import("../node_modules/nuxt/dist/app/components
 export const LazyFooter: LazyComponent<typeof import("../components/global/Footer.vue")['default']>
 export const LazyHeader: LazyComponent<typeof import("../components/global/Header.vue")['default']>
 export const LazyHomepageBlogs: LazyComponent<typeof import("../components/Homepage_blogs.vue")['default']>
+export const LazyHomepageYoutube: LazyComponent<typeof import("../components/Homepage_youtube.vue")['default']>
 export const LazyNuxtWelcome: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']>
 export const LazyNuxtLayout: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout")['default']>
 export const LazyNuxtErrorBoundary: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/nuxt-error-boundary.vue")['default']>

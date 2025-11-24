@@ -1,5 +1,5 @@
 <template>
-  <div class=" sm:container mx-auto">
+  <div class=" sm:container mx-auto py-10">
     <h1 class="text-4xl font-bold mb-8">Blog</h1>
     <p class="mb-8 text-lg text-gray-800">Thoughts, insights, and tutorials on web development, software engineering, and technology.</p>
 

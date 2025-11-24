@@ -1,63 +1,118 @@
-<template>
-  <div>
-    <h1 class="text-4xl font-bold mb-8">YouTube Videos</h1>
-    <p class="mb-8 text-lg text-gray-300">A collection of my tutorials, vlogs, and other content from my YouTube channel.</p>
-
-    <div v-if="videos.length === 0" class="text-center text-gray-400 py-12">
-      <p class="text-lg">No videos available yet. Check back soon!</p>
-    </div>
-
-    <!-- Masonry Grid -->
-    <div v-else class="columns-1 md:columns-2 lg:columns-3 gap-6">
-      <div v-for="video in videos" :key="video.id" class="break-inside-avoid bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition mb-6">
-        <div class="aspect-w-16 aspect-h-9">
-          <iframe
-            :src="`https://www.youtube.com/embed/${video.video_id}`"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-            class="w-full h-full"
-          ></iframe>
-        </div>
-        <div class="p-6">
-          <h3 class="text-xl font-semibold mb-2">{{ video.title }}</h3>
-          <p class="text-gray-400">{{ video.description }}</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted } from "vue";
 
-// YouTube Video interface based on PocketBase collection
 interface YoutubeVideo {
   id: string;
-  collectionId: string;
-  collectionName: string;
-  created: string;
-  updated: string;
   title: string;
   video_id: string;
   description: string;
+  created: string;
 }
 
 const videos = ref<YoutubeVideo[]>([]);
+const loading = ref(true);
+
 const { $pb } = useNuxtApp();
 
 const fetchVideos = async () => {
   try {
-    const result = await $pb.collection('youtube_videos').getList(1, 50, {
-      sort: '-created',
+    const result = await $pb.collection("youtube_videos").getList(1, 50, {
+      sort: "-created",
     });
-    videos.value = result.items as unknown as YoutubeVideo[];
+    videos.value = result.items as YoutubeVideo[];
   } catch (error) {
-    console.error('Error fetching YouTube videos:', error);
+    console.error("Error fetching YouTube videos:", error);
+  } finally {
+    loading.value = false;
   }
 };
 
-onMounted(() => {
-  fetchVideos();
-});
+const formatDate = (date: string) =>
+  new Date(date).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+
+onMounted(fetchVideos);
 </script>
+
+<template>
+  <div class="container mx-auto  py-10">
+    <!-- Header -->
+    <h1 class="text-4xl font-bold mb-3">YouTube Videos</h1>
+    <p class="mb-8 text-lg text-gray-400">
+      A collection of my tutorials, vlogs, and tech content from YouTube.
+    </p>
+
+    <main class="bg-[#F9F6F3] rounded-3xl p-6">
+      <!-- Loading Skeleton -->
+      <div
+        v-if="loading"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      >
+        <div
+          v-for="n in 6"
+          :key="n"
+          class="animate-pulse bg-gray-800 rounded-xl h-64"
+        ></div>
+      </div>
+
+      <!-- Empty State -->
+      <div
+        v-else-if="videos.length === 0"
+        class="text-center text-gray-400 py-12"
+      >
+        <p class="text-lg">No videos available yet. Check back soon!</p>
+      </div>
+
+      <!-- Masonry Grid -->
+      <div v-else class="columns-1 md:columns-2 lg:columns-3 gap-6">
+        <div
+          v-for="video in videos"
+          :key="video.id"
+          class="break-inside-avoid rounded-xl overflow-hidden bg-white borde r border-gray-700 hover:border-gray-500 transition mb-6 shadow-sm"
+        >
+          <!-- Video -->
+          <div class="relative w-full">
+            <div class="aspect-video">
+              <iframe
+                :src="`https://www.youtube.com/embed/${video.video_id}`"
+                frameborder="0"
+                allowfullscreen
+                class="w-full h-full"
+              ></iframe>
+            </div>
+          </div>
+
+          <!-- Content -->
+          <div class="p-5">
+            <h3 class="text-lg font-semibold leading-tight mb-2">
+              <a
+                :href="`https://www.youtube.com/embed/${video.video_id}`"
+                target="_blank"
+              >
+                {{ video.title }}
+              </a>
+            </h3>
+
+            <p class="text-gray-400 text-sm mb-3">
+              {{ video.description }}
+            </p>
+
+            <p class="text-xs text-gray-500">
+              Published: {{ formatDate(video.created) }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</template>
+
+<style scoped>
+/* Clean subtle card hover */
+.card-hover:hover {
+  transform: translateY(-2px);
+}
+</style>
