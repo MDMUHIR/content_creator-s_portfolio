@@ -23,6 +23,26 @@ const loading = ref(true);
 
 const { $pb } = useNuxtApp();
 
+// SEO Head
+useHead({
+  title: "Courses - Asadudzaman Joy",
+  meta: [
+    { name: "description", content: "Browse expert-led courses by Asadudzaman Joy. Learn web development, software engineering, and more with comprehensive online courses." },
+    { property: "og:title", content: "Courses - Asadudzaman Joy" },
+    { property: "og:description", content: "Browse expert-led courses by Asadudzaman Joy. Learn web development, software engineering, and more with comprehensive online courses." },
+    { property: "og:type", content: "website" },
+    { property: "og:url", content: "https://asadjoy.com/courses" },
+    { property: "og:image", content: "https://asadjoy.com/images/profile.jpg" },
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:title", content: "Courses - Asadudzaman Joy" },
+    { name: "twitter:description", content: "Browse expert-led courses by Asadudzaman Joy. Learn web development, software engineering, and more with comprehensive online courses." },
+    { name: "twitter:image", content: "https://asadjoy.com/images/profile.jpg" },
+  ],
+  link: [
+    { rel: "canonical", href: "https://asadjoy.com/courses" },
+  ],
+});
+
 const fetchCourses = async () => {
   try {
     loading.value = true;

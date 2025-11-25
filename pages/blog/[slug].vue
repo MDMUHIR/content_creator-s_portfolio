@@ -156,6 +156,21 @@
                       LinkedIn
                     </button>
                     <button
+                      @click="shareFacebook"
+                      class="flex items-center gap-2 px-4 py-2 bg-[#4267B2] text-white rounded-lg hover:bg-[#365899] transition"
+                    >
+                      <svg
+                        class="w-5 h-5"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+                        />
+                      </svg>
+                      Facebook
+                    </button>
+                    <button
                       @click="copyLink"
                       class="flex items-center gap-2 px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition"
                     >
@@ -258,6 +273,62 @@ const loading = ref(true);
 const copied = ref(false);
 const headings = ref<{ id: string; text: string; level: number }[]>([]);
 
+// SEO Head
+const pageTitle = computed(() => blog.value ? `${blog.value.title} - Asadudzaman Joy` : 'Blog Post - Asadudzaman Joy');
+const pageDescription = computed(() => {
+  if (blog.value?.content) {
+    const text = blog.value.content.replace(/<[^>]*>/g, '').trim();
+    return text.length > 160 ? text.slice(0, 160) + '...' : text;
+  }
+  return 'Read this insightful blog post by Asadudzaman Joy on web development and technology.';
+});
+const pageImage = computed(() => blog.value?.cover_image ? getCoverImageUrl(blog.value) : 'https://asadjoy.com/images/profile.jpg');
+const pageUrl = computed(() => `https://asadjoy.com/blog/${route.params.slug}`);
+
+useHead({
+  title: pageTitle,
+  meta: [
+    { name: "description", content: pageDescription },
+    { property: "og:title", content: pageTitle },
+    { property: "og:description", content: pageDescription },
+    { property: "og:type", content: "article" },
+    { property: "og:url", content: pageUrl },
+    { property: "og:image", content: pageImage },
+    { property: "article:author", content: "Asadudzaman Joy" },
+    { property: "article:published_time", content: () => blog.value?.created },
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:title", content: pageTitle },
+    { name: "twitter:description", content: pageDescription },
+    { name: "twitter:image", content: pageImage },
+  ],
+  link: [
+    { rel: "canonical", href: pageUrl },
+  ],
+  script: computed(() => [
+    {
+      type: "application/ld+json",
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": blog.value?.title,
+        "description": pageDescription.value,
+        "image": pageImage.value,
+        "author": {
+          "@type": "Person",
+          "name": "Asadudzaman Joy"
+        },
+        "publisher": {
+          "@type": "Person",
+          "name": "Asadudzaman Joy"
+        },
+        "datePublished": blog.value?.created,
+        "dateModified": blog.value?.updated,
+        "url": pageUrl.value
+      })
+    }
+  ])
+});
+
 const fetchBlog = async () => {
   try {
     loading.value = true;
@@ -337,6 +408,14 @@ const shareLinkedIn = () => {
     `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
       url
     )}`,
+    "_blank"
+  );
+};
+
+const shareFacebook = () => {
+  const url = window.location.href;
+  window.open(
+    `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
     "_blank"
   );
 };

@@ -28,6 +28,67 @@ const { $pb } = useNuxtApp();
 const course = ref<Course | null>(null);
 const loading = ref(true);
 
+// SEO Head
+const pageTitle = computed(() =>
+  course.value
+    ? `${course.value.title} - Course by Asadudzaman Joy`
+    : "Course - Asadudzaman Joy"
+);
+const pageDescription = computed(() => {
+  if (course.value?.description) {
+    const text = course.value.description.replace(/<[^>]*>/g, "").trim();
+    return text.length > 160 ? text.slice(0, 160) + "..." : text;
+  }
+  return "Enroll in this comprehensive course by Asadudzaman Joy and enhance your skills in web development and technology.";
+});
+const pageImage = computed(() =>
+  course.value?.cover_image
+    ? $pb.getFileUrl(course.value, course.value.cover_image)
+    : "https://asadjoy.com/images/profile.jpg"
+);
+const pageUrl = computed(
+  () => `https://asadjoy.com/courses/${route.params.id}`
+);
+
+useHead({
+  title: pageTitle,
+  meta: [
+    { name: "description", content: pageDescription },
+    { property: "og:title", content: pageTitle },
+    { property: "og:description", content: pageDescription },
+    { property: "og:type", content: "website" },
+    { property: "og:url", content: pageUrl },
+    { property: "og:image", content: pageImage },
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:title", content: pageTitle },
+    { name: "twitter:description", content: pageDescription },
+    { name: "twitter:image", content: pageImage },
+  ],
+  link: [{ rel: "canonical", href: pageUrl }],
+  script: computed(() => [
+    {
+      type: "application/ld+json",
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Course",
+        name: course.value?.title,
+        description: pageDescription.value,
+        image: pageImage.value,
+        provider: {
+          "@type": "Person",
+          name: "Asadudzaman Joy",
+        },
+        url: pageUrl.value,
+        offers: {
+          "@type": "Offer",
+          price: course.value?.price,
+          priceCurrency: "BDT",
+        },
+      }),
+    },
+  ]),
+});
+
 // poster / fallback image (the uploaded image path you provided)
 const posterSrc = "/mnt/data/eaef8e9e-4e42-4369-b9a6-c5c57f534f56.png";
 
@@ -229,20 +290,28 @@ onMounted(() => {
           class="flex flex-col sm:flex-row sm:items-center sm:gap-6 gap-3 mb-6"
         >
           <div class="flex items-center gap-3">
+            <a
+              v-if="course.course_link"
+              :href="course.course_link"
+              class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white px-5 py-3 rounded-lg font-semibold shadow"
+              >রেজিস্টার করুন</a
+            >
+
             <NuxtLink
+              v-else
               :to="`/checkout/${course.id}`"
               class="inline-flex items-center bg-amber-500 hover:bg-amber-600 text-white px-5 py-3 rounded-lg font-semibold shadow"
             >
               রেজিস্টার করুন
             </NuxtLink>
 
-            <button
+            <!-- <button
               v-if="hasPreview"
               @click="openPreview"
               class="inline-flex items-center bg-white border border-gray-200 hover:shadow-md px-4 py-3 rounded-lg text-gray-800"
             >
               ফ্রি প্রিভিউ
-            </button>
+            </button> -->
           </div>
 
           <div class="mt-3 sm:mt-0">
@@ -342,7 +411,7 @@ onMounted(() => {
               <!-- fallback: cover image -->
               <img
                 v-else
-                :src="posterSrc"
+                :src="course.cover_image ? $pb.getFileUrl(course, course.cover_image) : posterSrc"
                 :alt="course.title"
                 class="w-full aspect-video object-cover"
               />

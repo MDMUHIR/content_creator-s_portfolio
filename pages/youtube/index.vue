@@ -14,6 +14,39 @@ const loading = ref(true);
 
 const { $pb } = useNuxtApp();
 
+// SEO Head
+useHead({
+  title: "YouTube Videos - Asadudzaman Joy",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Watch tutorials, vlogs, and tech content from Asadudzaman Joy's YouTube channel. Learn about web development, software engineering, and technology.",
+    },
+    { property: "og:title", content: "YouTube Videos - Asadudzaman Joy" },
+    {
+      property: "og:description",
+      content:
+        "Watch tutorials, vlogs, and tech content from Asadudzaman Joy's YouTube channel. Learn about web development, software engineering, and technology.",
+    },
+    { property: "og:type", content: "website" },
+    { property: "og:url", content: "https://asadjoy.com/youtube" },
+    { property: "og:image", content: "https://asadjoy.com/images/profile.jpg" },
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:title", content: "YouTube Videos - Asadudzaman Joy" },
+    {
+      name: "twitter:description",
+      content:
+        "Watch tutorials, vlogs, and tech content from Asadudzaman Joy's YouTube channel. Learn about web development, software engineering, and technology.",
+    },
+    {
+      name: "twitter:image",
+      content: "https://asadjoy.com/images/profile.jpg",
+    },
+  ],
+  link: [{ rel: "canonical", href: "https://asadjoy.com/youtube" }],
+});
+
 const fetchVideos = async () => {
   try {
     const result = await $pb.collection("youtube_videos").getList(1, 50, {
@@ -38,9 +71,11 @@ onMounted(fetchVideos);
 </script>
 
 <template>
-  <div class="container mx-auto  py-10">
+  <div class="container mx-auto py-10">
     <!-- Header -->
-    <h1 class="text-4xl font-bold mb-3">YouTube Videos</h1>
+    <h1 class="text-4xl font-bold mb-3">
+      Popular <span class="text-red-600">YouTube</span> Videos
+    </h1>
     <p class="mb-8 text-lg text-gray-400">
       A collection of my tutorials, vlogs, and tech content from YouTube.
     </p>
@@ -97,7 +132,7 @@ onMounted(fetchVideos);
             </h3>
 
             <p class="text-gray-400 text-sm mb-3">
-              {{ video.description }}
+              {{ video.description.replace(/<\/?p>/g, "") }}
             </p>
 
             <p class="text-xs text-gray-500">

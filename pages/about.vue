@@ -1,3 +1,25 @@
+<script setup>
+// SEO Head
+useHead({
+  title: "About Asadudzaman Joy - Content Creator & Developer",
+  meta: [
+    { name: "description", content: "Learn more about Asadudzaman Joy, a passionate full-stack developer and content creator with a love for creating beautiful web applications and sharing knowledge about books and technology." },
+    { property: "og:title", content: "About Asadudzaman Joy - Content Creator & Developer" },
+    { property: "og:description", content: "Learn more about Asadudzaman Joy, a passionate full-stack developer and content creator with a love for creating beautiful web applications and sharing knowledge about books and technology." },
+    { property: "og:type", content: "website" },
+    { property: "og:url", content: "https://asadjoy.com/about" },
+    { property: "og:image", content: "https://asadjoy.com/images/profile.jpg" },
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:title", content: "About Asadudzaman Joy - Content Creator & Developer" },
+    { name: "twitter:description", content: "Learn more about Asadudzaman Joy, a passionate full-stack developer and content creator with a love for creating beautiful web applications and sharing knowledge about books and technology." },
+    { name: "twitter:image", content: "https://asadjoy.com/images/profile.jpg" },
+  ],
+  link: [
+    { rel: "canonical", href: "https://asadjoy.com/about" },
+  ],
+});
+</script>
+
 <template>
   <div>
     <h1 class="text-4xl font-bold mb-8">About Me</h1>

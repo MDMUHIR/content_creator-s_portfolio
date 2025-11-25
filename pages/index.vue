@@ -17,6 +17,46 @@ const fetchProfile = async () => {
 };
 
 onMounted(fetchProfile);
+
+// SEO Head
+useHead({
+  title: "Asadudzaman Joy - Content Creator & Book Reviewer",
+  meta: [
+    { name: "description", content: "I mostly talk about books, but also discusses various topics including business and productivity. And sometimes I travel to different districts of the country and share that experience with you." },
+    { property: "og:title", content: "Asadudzaman Joy - Content Creator & Book Reviewer" },
+    { property: "og:description", content: "I mostly talk about books, but also discusses various topics including business and productivity. And sometimes I travel to different districts of the country and share that experience with you." },
+    { property: "og:type", content: "website" },
+    { property: "og:url", content: "https://asadjoy.com" },
+    { property: "og:image", content: "https://asadjoy.com/images/profile.jpg" },
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:title", content: "Asadudzaman Joy - Content Creator & Book Reviewer" },
+    { name: "twitter:description", content: "I mostly talk about books, but also discusses various topics including business and productivity. And sometimes I travel to different districts of the country and share that experience with you." },
+    { name: "twitter:image", content: "https://asadjoy.com/images/profile.jpg" },
+  ],
+  link: [
+    { rel: "canonical", href: "https://asadjoy.com" },
+  ],
+  script: [
+    {
+      type: "application/ld+json",
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Asadudzaman Joy",
+        "jobTitle": "Content Creator & Book Reviewer",
+        "description": "I mostly talk about books, but also discusses various topics including business and productivity. And sometimes I travel to different districts of the country and share that experience with you.",
+        "url": "https://asadjoy.com",
+        "image": "https://asadjoy.com/images/profile.jpg",
+        "sameAs": [
+          "https://youtube.com/@asadjoy", // Replace with actual social links
+          "https://facebook.com/asadjoy",
+          "https://twitter.com/asadjoy",
+          "https://instagram.com/asadjoy"
+        ]
+      })
+    }
+  ]
+});
 </script>
 
 <template>
@@ -40,11 +80,11 @@ onMounted(fetchProfile);
         class="relative z-10 grid lg:grid-cols-2 items-center gap-10 sm:gap-14 md:gap-20"
       >
         <!-- Profile Image -->
-        <div class="flex justify-center lg:justify-start order-2 lg:order-1">
+        <div class="flex justify-center  order-2 lg:order-1">
           <img
             :src="profile || 'https://via.placeholder.com/600'"
             alt="Profile"
-            class="w-52 h-52 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-3xl shadow-xl object-cover border-4 border-white/70"
+            class="w-52 h-52 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-3xl shadow-xl object-cover border-4 border-white/70 "
           />
         </div>
 
