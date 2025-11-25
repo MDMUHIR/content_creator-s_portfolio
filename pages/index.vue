@@ -84,7 +84,7 @@ useHead({
           <img
             :src="profile || 'https://via.placeholder.com/600'"
             alt="Profile"
-            class="w-52 h-52 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-3xl shadow-xl object-cover border-4 border-white/70 "
+            class="w-52 h-52 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-3xl  object-cover  "
           />
         </div>
 
@@ -105,7 +105,7 @@ useHead({
           <p
             class="text-lg sm:text-xl md:text-2xl text-gray-700 mb-3 font-medium"
           >
-            Content Creator • Book Reviewer
+            Productivity Content Creator • Book Reviewer
           </p>
 
           <p

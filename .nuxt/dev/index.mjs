@@ -711,10 +711,6 @@ const _inlineRuntimeConfig = {
         "exclude": [
           "/_**",
           "/_nuxt/**",
-          "/_nuxt/**",
-          "/_nuxt/**",
-          "/_nuxt/**",
-          "/_nuxt/**",
           "/_nuxt/**"
         ],
         "includeAppSources": true
@@ -760,10 +756,6 @@ const _inlineRuntimeConfig = {
       }
     ],
     "sitemap": [
-      "/sitemap.xml",
-      "/sitemap.xml",
-      "/sitemap.xml",
-      "/sitemap.xml",
       "/sitemap.xml",
       "/sitemap.xml"
     ],

@@ -99,9 +99,9 @@
         <!-- Content Container -->
         <div class="container mx-auto px-4 -mt-16 relative z-10">
           <div class="max-w-5xl mx-auto">
-            <div class="grid lg:grid-cols-4 gap-10">
+            <div class="grid md:grid-cols-4 gap-10">
               <!-- Main Content -->
-              <div class="lg:col-span-3">
+              <div class="md:col-span-3">
                 <div
                   class="bg-white rounded-3xl shadow-2xl p-8 md:p-12 prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-gray-900 prose-a:text-blue-600 hover:prose-a:underline prose-blockquote:border-l-4 prose-blockquote:border-blue-600 prose-blockquote:pl-6 prose-blockquote:italic prose-code:bg-gray-100 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-pre:bg-gray-900 prose-pre:text-gray-100"
                 >
@@ -124,7 +124,7 @@
                     </svg>
                     Share this post
                   </h3>
-                  <div class="flex gap-3">
+                  <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                     <button
                       @click="shareTwitter"
                       class="flex items-center gap-2 px-4 py-2 bg-[#1DA1F2] text-white rounded-lg hover:bg-[#1a91da] transition"
@@ -217,7 +217,7 @@
               </div>
 
               <!-- Sidebar: Table of Contents -->
-              <aside class="hidden lg:block">
+              <aside class="hidden md:block">
                 <div
                   class="sticky top-24 bg-white rounded-2xl shadow-xl p-6 border border-gray-200"
                 >
